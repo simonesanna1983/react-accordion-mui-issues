@@ -15,17 +15,15 @@ export interface FakeDataModel {
   isExpanded: boolean;
 }
 
-const fakeDataMockList: FakeDataModel[] = [];
-
 export default function ControlledAccordions() {
-  const [fakeDataList, setFakeDataList] =
-    React.useState<FakeDataModel[]>(fakeDataMockList);
+  const [fakeDataList, setFakeDataList] = React.useState<FakeDataModel[]>([]);
 
   const inputRef = React.useRef(null);
   const [numerofItems, setNumerofItems] = React.useState<number>(10);
 
   const tabItems = React.useMemo(() => {
     debugger;
+    const fakeDataMockList: FakeDataModel[] = [];
     for (var i = 0; i < numerofItems; i++) {
       fakeDataMockList.push({
         id: i,
@@ -37,7 +35,9 @@ export default function ControlledAccordions() {
         isExpanded: false,
       });
     }
-  }, [numerofItems, fakeDataList]);
+
+    setFakeDataList(fakeDataMockList);
+  }, [numerofItems]);
 
   const expandPanel = (data: FakeDataModel) => {
     const index = fakeDataList.findIndex((s) => s.id === data.id);
