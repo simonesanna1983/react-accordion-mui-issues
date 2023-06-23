@@ -76,13 +76,15 @@ export default function ControlledAccordions() {
             expandPanel(data);
           }}
           className="ctr-card ctr-accordian"
-          key={data.id}
+          key={'accordion' + data.id + '_' + data.desc}
+          TransitionProps={{ unmountOnExit: true }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
             sx={{ marginTop: '20px' }}
+            key={'accordionSummary' + data.id + '_' + data.desc}
           >
             <Grid container className={'ctr-grid'}>
               <Grid item xs={2}>
