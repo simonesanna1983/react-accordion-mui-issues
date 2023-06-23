@@ -4,6 +4,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import './demo.scss';
+import { Grid } from '@mui/material';
 
 export interface FakeDataModel {
   id: number;
@@ -15,24 +17,29 @@ export interface FakeDataModel {
 
 const fakeDataMockList: FakeDataModel[] = [];
 
-for (var i = 0; i < 100; i++) {
-  fakeDataMockList.push({
-    id: i,
-    title: 'title' + i,
-    addInfo: 'addInfo' + i,
-    desc:
-      'desc gagsdfgdfsgergsdrgfesdrghesdrgthjeryrjyrtghtrjtyrrhgtjhtryhgtghtghestrgreth' +
-      i,
-    isExpanded: false,
-  });
-}
-
 export default function ControlledAccordions() {
   const [fakeDataList, setFakeDataList] =
     React.useState<FakeDataModel[]>(fakeDataMockList);
 
-  const expandPanel = (data: FakeDataModel) => {
+  const inputRef = React.useRef(null);
+  const [numerofItems, setNumerofItems] = React.useState<number>(10);
+
+  const tabItems = React.useMemo(() => {
     debugger;
+    for (var i = 0; i < numerofItems; i++) {
+      fakeDataMockList.push({
+        id: i,
+        title: 'title' + i,
+        addInfo: 'addInfo' + i,
+        desc:
+          'desc gagsdfgdfsgergsdrgfesdrghesdrgthjeryrjyrtghtrjtyrrhgtjhtryhgtghtghestrgreth' +
+          i,
+        isExpanded: false,
+      });
+    }
+  }, [numerofItems, fakeDataList]);
+
+  const expandPanel = (data: FakeDataModel) => {
     const index = fakeDataList.findIndex((s) => s.id === data.id);
     if (index !== -1) {
       let temp = fakeDataList[index];
@@ -43,28 +50,53 @@ export default function ControlledAccordions() {
     }
   };
 
-  console.log('fakeDataList', fakeDataList);
+  const handleClick = () => {
+    debugger;
+    if (inputRef?.current && inputRef?.current) {
+      const val = Number((inputRef?.current as any).value);
+
+      console.log('inputRef?.current?.value', val);
+      if (!isNaN(val) && val > 0) {
+        setNumerofItems(val);
+      }
+    }
+  };
+
   return (
     <div>
+      <div>
+        Insert Number of Items to show:
+        <input ref={inputRef} type="text" />
+        <button onClick={handleClick}>OK</button>
+      </div>
       {fakeDataList.map((data) => (
         <Accordion
           expanded={data.isExpanded}
           onChange={() => {
             expandPanel(data);
           }}
+          className="ctr-card ctr-accordian"
           key={data.id}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
+            sx={{ marginTop: '20px' }}
           >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>
-              {data.title}
-            </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-              {data.addInfo}
-            </Typography>
+            <Grid container className={'ctr-grid'}>
+              <Grid item xs={2}>
+                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                  {data.title}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={10}>
+                <Typography sx={{ color: 'text.secondary' }}>
+                  {data.addInfo}
+                </Typography>
+              </Grid>
+            </Grid>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>{data.desc}</Typography>
