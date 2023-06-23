@@ -7,14 +7,24 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export interface FakeDataModel {
   id: number;
+  title: string;
+  addInfo: string;
   desc: string;
   isExpanded: boolean;
 }
 
 const fakeDataMockList: FakeDataModel[] = [];
 
-for (var i = 0; i < 10; i++) {
-  fakeDataMockList.push({ id: i, desc: 'aa' + i, isExpanded: false });
+for (var i = 0; i < 100; i++) {
+  fakeDataMockList.push({
+    id: i,
+    title: 'title' + i,
+    addInfo: 'addInfo' + i,
+    desc:
+      'desc gagsdfgdfsgergsdrgfesdrghesdrgthjeryrjyrtghtrjtyrrhgtjhtryhgtghtghestrgreth' +
+      i,
+    isExpanded: false,
+  });
 }
 
 export default function ControlledAccordions() {
@@ -50,17 +60,14 @@ export default function ControlledAccordions() {
             id="panel1bh-header"
           >
             <Typography sx={{ width: '33%', flexShrink: 0 }}>
-              General settings
+              {data.title}
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              I am an accordion
+              {data.addInfo}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
-              feugiat. Aliquam eget maximus est, id dignissim quam.
-            </Typography>
+            <Typography>{data.desc}</Typography>
           </AccordionDetails>
         </Accordion>
       ))}
