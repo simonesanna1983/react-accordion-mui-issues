@@ -4,28 +4,45 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useDemoData } from '@mui/x-data-grid-generator';
+
+export interface FakeDataModel {
+  id: number;
+  desc: string;
+  isExpanded: boolean;
+}
+
+const fakeDataMockList: FakeDataModel[] = [];
+
+for (var i = 0; i < 10; i++) {
+  fakeDataMockList.push({ id: i, desc: 'aa' + i, isExpanded: false });
+}
 
 export default function ControlledAccordions() {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [fakeDataList, setFakeDataList] =
+    React.useState<FakeDataModel[]>(fakeDataMockList);
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const expandPanel = (data: FakeDataModel) => {
+    debugger;
+    const index = fakeDataList.findIndex((s) => s.id === data.id);
+    if (index !== -1) {
+      let temp = fakeDataList[index];
+      temp = { ...temp, isExpanded: !temp.isExpanded };
+      fakeDataList[index] = temp;
 
-  const { data } = useDemoData({
-    dataSet: 'Commodity',
-    rowLength: 10,
-    editable: true,
-  });
+      setFakeDataList((fakeDataList) => [...fakeDataList]);
+    }
+  };
 
+  console.log('fakeDataList', fakeDataList);
   return (
     <div>
-      {data.rows.map((d) => (
+      {fakeDataList.map((data) => (
         <Accordion
-          expanded={expanded === 'panel1'}
-          onChange={handleChange('panel1')}
+          expanded={data.isExpanded}
+          onChange={() => {
+            expandPanel(data);
+          }}
+          key={data.id}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
